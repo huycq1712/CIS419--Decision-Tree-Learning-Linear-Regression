@@ -80,8 +80,8 @@ def visualizeObjective(lr_model,t1_vals,t2_vals, X, y):
 
     # Compute the objective function over the space
     Z = np.zeros(T1.shape)
-    for i in xrange(n):
-        for j in xrange(p):
+    for i in range(n):
+        for j in range(p):
             Z[i,j] = lr_model.computeCost(X,y, np.matrix([T1[i,j],T2[i,j]]).T )
 
     fig = plt.figure()
@@ -98,7 +98,7 @@ def visualizeObjective(lr_model,t1_vals,t2_vals, X, y):
     # If the history of the objective function plot the path taken by the gradient descent
     if lr_model.JHist !=None:
         
-        for ii in xrange(len(lr_model.JHist)-1): 
+        for ii in range(len(lr_model.JHist)-1): 
             t1 = lr_model.JHist[ii][1].tolist()
             t2 = lr_model.JHist[ii+1][1].tolist()
 
@@ -168,7 +168,7 @@ if __name__ == "__main__":
     visualizeObjective(lr_model,theta1_vals, theta2_vals, X, y)
 
     # Compute the closed form solution in one line of code
-    theta_closed_form = (X.getT()*X).getI()*X.getT()*y  
-    print "theta_closed_form: ", theta_closed_form
+    theta_closed_form = (X.T@X).I@X.T@y  
+    print ("theta_closed_form: ", theta_closed_form)
     
 
