@@ -48,7 +48,7 @@ if __name__ == "__main__":
     lr_model.fit(X,y)
 
     # Compute the closed form solution in one line of code
-    thetaClosedForm = (X.getT()*X).getI()*X.getT()*y
-    print "thetaClosedForm: ", thetaClosedForm
+    thetaClosedForm = (X.T@X).I@X.T@y  
+    print ("thetaClosedForm: ", thetaClosedForm)
 
 
