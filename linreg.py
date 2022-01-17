@@ -31,19 +31,12 @@ class LinearRegression:
         '''
         n,d = X.shape
         self.JHist = []    
-        for i in xrange(self.n_iter):
-            self.JHist.append( (self.computeCost(X, y, theta), theta) )
-            print "Iteration: ", i+1, " Cost: ", self.JHist[i][0], " Theta: ", theta
+        for i in range(self.n_iter):
+            loss, h0 = self.computeCost(X, y, theta)
+            self.JHist.append( (loss, theta) )
+            print ("Iteration: ", i+1, " Cost: ", self.JHist[i][0], " Theta: ", theta)
             # TODO:  add update equation here
-            n,d = X.shape
-            thetaDimensions,b = theta.shape     
-            corrections = [0] * thetaDimensions
-
-            for j in range(0,n):
-                for thetaDimension in range(0,thetaDimensions):
-                    corrections[thetaDimension] += (theta.getT()*X[j,:].getT() - y[j])*X[j,thetaDimension]
-            for thetaDimension in range(0,thetaDimensions):
-                theta[thetaDimension] = theta[thetaDimension] - corrections[thetaDimension]*(self.alpha/n)               
+            theta = theta - self.alpha*(X.T@(h0-y)/n)
         return theta
 
     def computeCost(self, X, y, theta):
@@ -58,9 +51,9 @@ class LinearRegression:
               ** make certain you don't return a matrix with just one value! **
         '''
         # TODO: add objective (cost) equation here
-        n,d = X.shape
-        cost = (X*theta - y).getT()*(X*theta - y)/(2*n)
-        return cost[0,0]
+        h0 = X@theta
+        cost = np.sum(np.square(h0-y))/(2*X.shape[0])
+        return cost, h0
 
     def fit(self, X, y):
         '''
@@ -84,4 +77,4 @@ class LinearRegression:
         Returns:
             an n-dimensional numpy vector of the predictions
         '''
-        return X*self.theta
+        return X@self.theta
